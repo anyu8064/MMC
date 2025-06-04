@@ -54,11 +54,9 @@ export default function Accountability() {
     };
 
     return (
-        <Box sx={{ display: 'flex', height: '100vh' }}>
-            <Box sx={{ display: 'flex', height: '100vh' }}>
-                <SideBar />
-            </Box>
-            <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', ml: '300px' }}>
+        <Box sx={{ display: 'flex', height: '100vh', width: '100%' }}>
+            <SideBar />
+            <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
                 <Box sx={{ height: '10px', flexShrink: 0 }}>
                     <Header title='Accountability Form' />
                 </Box>
