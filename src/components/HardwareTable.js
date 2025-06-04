@@ -4,10 +4,15 @@ import {
   TableBody, Paper, Box, TextField, Tooltip, IconButton
 } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 export default function HardwareTable({ data, setData }) {
   const addRow = () => {
     setData(prev => [...prev, { serial: '', item: '', quantity: '', status: '', dateIssued: '' }]);
+  };
+
+  const deleteRow = (index) => {
+    setData(prev => prev.filter((_, i) => i !== index));
   };
 
   const handleChange = (index, field) => (e) => {
@@ -27,7 +32,7 @@ export default function HardwareTable({ data, setData }) {
               <TableCell>Quantity</TableCell>
               <TableCell>Received/Not Received</TableCell>
               <TableCell>Date Issued</TableCell>
-              <TableCell align="right">
+              <TableCell sx={{ width: '40px', padding: 0 }}>
                 <Tooltip title="Add Row">
                   <IconButton onClick={addRow} size="small">
                     <AddCircleOutlineIcon fontSize="small" />
@@ -39,11 +44,28 @@ export default function HardwareTable({ data, setData }) {
           <TableBody>
             {data.map((row, index) => (
               <TableRow key={index}>
-                <TableCell><TextField fullWidth value={row.serial} onChange={handleChange(index, 'serial')} /></TableCell>
-                <TableCell><TextField fullWidth value={row.item} onChange={handleChange(index, 'item')} /></TableCell>
-                <TableCell><TextField fullWidth type="number" value={row.quantity} onChange={handleChange(index, 'quantity')} /></TableCell>
-                <TableCell><TextField fullWidth value={row.status} onChange={handleChange(index, 'status')} /></TableCell>
-                <TableCell colSpan={2}><TextField fullWidth type="date" value={row.dateIssued} onChange={handleChange(index, 'dateIssued')} /></TableCell>
+                <TableCell>
+                  <TextField fullWidth value={row.serial} onChange={handleChange(index, 'serial')} />
+                </TableCell>
+                <TableCell>
+                  <TextField fullWidth value={row.item} onChange={handleChange(index, 'item')} />
+                </TableCell>
+                <TableCell>
+                  <TextField fullWidth type="number" value={row.quantity} onChange={handleChange(index, 'quantity')} />
+                </TableCell>
+                <TableCell>
+                  <TextField fullWidth value={row.status} onChange={handleChange(index, 'status')} />
+                </TableCell>
+                <TableCell>
+                  <TextField fullWidth type="date" value={row.dateIssued} onChange={handleChange(index, 'dateIssued')} />
+                </TableCell>
+                <TableCell sx={{ width: '40px', padding: 0 }}>
+                  <Tooltip title="Delete Row">
+                    <IconButton onClick={() => deleteRow(index)} size="small" color="error">
+                      <DeleteIcon fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
