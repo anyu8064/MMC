@@ -11,7 +11,7 @@ export default function CABs() {
       <SideBar />
     </Box>
     <Box sx={{flexGrow: 1, display: 'flex', flexDirection: 'column', ml: '300px'}}>
-      <Header title='eRx Tablets' />
+      <Header title='CABs' />
         <Box sx={{flexGrow: 1, p: 2, mt: 10, width: '1160px'}}>
           <Table />
         </Box>

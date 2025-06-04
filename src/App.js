@@ -1,7 +1,8 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Login from './MainPage/Login'
-import Dashboard from './MainPage/Dashboard'
-import ForgotPass from './modules/ForgotPass'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Login from './MainPage/Login';
+import Dashboard from './MainPage/Dashboard';
+import ForgotPass from './modules/ForgotPass';
+import ResetPass from './modules/ResetPassword';
 import AuthContextProvider from './context/AuthContext';
 import LaptopDesktop from './MainPage/LaptopDesktop';
 import ITPeripherals from './MainPage/ITPeripherals';
@@ -22,6 +23,7 @@ export default function App() {
         <Routes>
           <Route path='/' element={<Login />} />
           <Route path='/forgot-password' element={<ForgotPass />} />
+          <Route path='/reset-password' element={<ResetPass />} />
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/laptop-desktop' element={<LaptopDesktop />} />
           <Route path='/it-peripherals' element={<ITPeripherals />} />

@@ -7,6 +7,7 @@ import SoftwareTable from '../components/SoftwareTable';
 import MmcAppTable from '../components/MmcAppTable';
 import ConfigurationTable from '../components/ConfigurationTable';
 import AccountabilityFormPreview from '../Modals/AccountabilityFormPreview';
+import Prompt from '../components/prompt';
 
 export default function Accountability() {
     const [formData, setFormData] = useState({
@@ -31,6 +32,10 @@ export default function Accountability() {
 
     const handleChange = (field) => (e) => {
         setFormData({ ...formData, [field]: e.target.value });
+    };
+
+    const handleClosePrompt = () => {
+        setPrompt(prev => ({ ...prev, open: false }));
     };
 
     const handlePreviewClick = () => {
@@ -60,15 +65,15 @@ export default function Accountability() {
                 <Box sx={{ flexGrow: 1, p: 2, mt: 10, height: 'calc(100vh - 10px)', overflow: 'auto' }}>
                     {!preview ? (
                         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                            <TextField fullWidth label='Employee' value={formData.employee} onChange={handleChange('employee')} required={true} />
-                            <TextField fullWidth label='Department' value={formData.department} onChange={handleChange('department')} required={true} />
-                            <TextField fullWidth label='Employee ID Number' value={formData.employeeId} onChange={handleChange('employeeId')} required={true} />
-                            <TextField fullWidth label='Issued By (Requester/Immediate Head)' value={formData.issuedBy} onChange={handleChange('issuedBy')} required={true} />
+                            <TextField fullWidth label='Employee' value={formData.employee} onChange={handleChange('employee')} required />
+                            <TextField fullWidth label='Department' value={formData.department} onChange={handleChange('department')} required />
+                            <TextField fullWidth label='Employee ID Number' value={formData.employeeId} onChange={handleChange('employeeId')} required />
+                            <TextField fullWidth label='Issued By (Requester/Immediate Head)' value={formData.issuedBy} onChange={handleChange('issuedBy')} required />
                             <HardwareTable data={hardwareData} setData={setHardwareData} />
                             <SoftwareTable data={softwareData} setData={setSoftwareData} />
                             <MmcAppTable data={mmcData} setData={setMmcData} />
                             <ConfigurationTable data={configData} setData={setConfigData} />
-                            <Button variant="contained" onClick={() => setPreview(true)}>Preview</Button>
+                            <Button variant="contained" onClick={handlePreviewClick}>Preview</Button>
                         </Box>
                     ) : (
                         <>
@@ -79,11 +84,17 @@ export default function Accountability() {
                                 mmcAppData={mmcData}
                                 configData={configData}
                             />
-                            <Button variant="outlined" sx={{ mt: -7.5 }} onClick={handlePreviewClick}>Back to Form</Button>
+                            <Button variant="outlined" sx={{ mt: -7.5 }} onClick={() => setPreview(false)}>Back to Form</Button>
                         </>
                     )}
                 </Box>
             </Box>
+            <Prompt
+                open={prompt.open}
+                message={prompt.message}
+                severity={prompt.severity}
+                onClose={handleClosePrompt}
+            />
         </Box>
     );
 }

@@ -95,7 +95,7 @@ export default function Dashboard() {
                 {Object.values(counts).reduce((acc, val) => acc + val, 0)}
               </Typography>
             )}
-            <Typography variant='h6' color='white'>OverAll Count</Typography>
+            <Typography variant='h6' color='white'>Overall Count</Typography>
           </Paper>
         </Box>
       </Box>

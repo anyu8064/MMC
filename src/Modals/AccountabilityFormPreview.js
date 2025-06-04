@@ -8,60 +8,90 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { getFirestore, collection, addDoc } from 'firebase/firestore';
+import Prompt from '../components/prompt';
+import CircularLoading from '../components/CircularLoading';
 import emailjs from '@emailjs/browser';
 
 export default function AccountabilityFormPreview({ formData, hardwareData, softwareData, mmcAppData, configData }) {
     const [open, setOpen] = useState(false);
     const [email, setEmail] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [promptOpen, setPromptOpen] = useState(false);
+    const [promptMessage, setPromptMessage] = useState('');
+    const [promptSeverity, setPromptSeverity] = useState('info');
+    const [progress, setProgress] = useState(0);
     const formRef = useRef();
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
+    const showPrompt = (message, severity = 'info') => {
+        setPromptMessage(message);
+        setPromptSeverity(severity);
+        setPromptOpen(true);
+    };
+
+    const handlePromptClose = () => {
+        setPromptOpen(false);
+    };
+
     const generatePdfAndUpload = async () => {
-        const element = formRef.current;
-        const canvas = await html2canvas(element);
-        const imgData = canvas.toDataURL('image/png');
-    
-        const pdf = new jsPDF('p', 'mm', 'a4');
-        const imgProps = pdf.getImageProperties(imgData);
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-    
-        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-    
-        const pdfBlob = pdf.output('blob');
-    
-        // Create a reference to Firebase Storage
-        const storage = getStorage();
-        const storageRef = ref(storage, 'pdfs/' + new Date().toISOString() + '.pdf');
-        const uploadTask = uploadBytesResumable(storageRef, pdfBlob);
+        setLoading(true); // show loader
 
-        uploadTask.on(
-            'state_changed',
-            (snapshot) => {
-                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                console.log('Upload is ' + progress + '% done');
-            },
-            (error) => {
-                console.error('Error uploading PDF:', error);
-                alert('Error uploading PDF.');
-            },
-            async () => {
-                const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-                const db = getFirestore();
-                const docRef = await addDoc(collection(db, 'pdfs'), {
-                    email: email,
-                    pdfLink: downloadURL,
-                    createdAt: new Date(),
-                });
+        try {
+            const element = formRef.current;
+            const canvas = await html2canvas(element);
+            const imgData = canvas.toDataURL('image/png');
 
-                sendEmailWithLink(email, downloadURL);
-                alert('PDF uploaded successfully! Email with download link sent.');
-            }
-        );
-        handleClose();
-    };  
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            const imgProps = pdf.getImageProperties(imgData);
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+            const pdfBlob = pdf.output('blob');
+
+            const storage = getStorage();
+            const storageRef = ref(storage, 'pdfs/' + new Date().toISOString() + '.pdf');
+            const uploadTask = uploadBytesResumable(storageRef, pdfBlob);
+
+            uploadTask.on(
+                'state_changed',
+                (snapshot) => {
+                    const percent = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    setProgress(Math.round(percent));
+                },
+                (error) => {
+                    console.error('Upload error:', error);
+                    showPrompt('Error uploading PDF.', 'error');
+                    setLoading(false);
+                },
+                async () => {
+                    const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+                    const db = getFirestore();
+                    await addDoc(collection(db, 'pdfs'), {
+                        email,
+                        pdfLink: downloadURL,
+                        createdAt: new Date(),
+                    });
+
+                    await sendEmailWithLink(email, downloadURL);
+
+                    showPrompt('PDF uploaded and email sent successfully!', 'success');
+                    setLoading(false);
+                    setProgress(0);
+                    handleClose();
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000)
+                }
+            );
+        } catch (error) {
+            console.error(error);
+            showPrompt('Unexpected error occurred.', 'error');
+            setLoading(false);
+        }
+    };
 
     const sendEmailWithLink = async (recipientEmail, pdfLink) => {
         try {
@@ -75,14 +105,13 @@ export default function AccountabilityFormPreview({ formData, hardwareData, soft
                 },
                 '4Wg9vMWzuLUFhTCIL'
             );
-
-            console.log('Email sent successfully:', result.text);
-            alert('Email sent successfully!');
+            console.log('Email sent:', result.text);
         } catch (error) {
-            console.error('Email sending failed:', error);
-            alert('Failed to send email: ' + error.text);
+            console.error('Email failed:', error);
+            showPrompt('Failed to send email: ' + error.text, 'error');
         }
     };
+
 
     return (
         <>
@@ -110,7 +139,25 @@ export default function AccountabilityFormPreview({ formData, hardwareData, soft
                     </Button>
                 </Box>
             </Modal>
-
+            {loading && (
+                <Modal open={true}>
+                    <Box sx={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    bgcolor: 'background.paper',
+                    boxShadow: 24,
+                    p: 4,
+                    borderRadius: 2,
+                    textAlign: 'center',
+                    }}>
+                    <Typography variant="h6" mb={2}>Processing...</Typography>
+                    <CircularLoading value={progress} />
+                    <Typography variant="body2">Please wait while we generate and send your PDF.</Typography>
+                    </Box>
+                </Modal>
+            )}
             <Box p={4} component={Paper} ref={formRef}>
                 <Box mb={2}>
                     <Typography><strong>Employee:</strong> {formData.employee}</Typography>
@@ -244,6 +291,12 @@ export default function AccountabilityFormPreview({ formData, hardwareData, soft
                     Send as PDF
                 </Button>
             </Box>
+            <Prompt
+                open={promptOpen}
+                message={promptMessage}
+                severity={promptSeverity}
+                onClose={handlePromptClose}
+            />
         </>
     );
 }
