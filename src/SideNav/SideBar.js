@@ -1,4 +1,3 @@
-import React from 'react';
 import { Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import Logo from '../assets/Logo.png';
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
@@ -13,96 +12,62 @@ import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 
 export default function SideBar() {
   return (
-    <Box sx={{display: 'flex'}}>
-        <Box sx={{position: 'fixed', flex: 1, display: 'flex', flexDirection: 'column', backgroundColor: '#fffff', padding: 1.5, border: '1px solid rgb(216, 217, 221)', width: 280, maxHeight: 730}}>
-            <img src={Logo} alt="Logo" style={{ width: 270, height: 'auto', objectFit: 'contain', marginBottom: 10 }} />
-            <Box sx={{flex: 1, overflowY: 'auto'}}>
-                <List>
-                    {/*Dashboard */}
-                    <ListItem sx={{marginBottom: 2}}>
-                        <ListItemButton href='/dashboard'>
-                            <ListItemIcon>
-                                <DashboardOutlinedIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Dashboard" sx={{color: 'black'}} />
-                        </ListItemButton>
-                    </ListItem>
-                    {/*Laptop & Desktops */}
-                    <ListItem sx={{marginBottom: 2}}>
-                        <ListItemButton href='/laptop-desktop'>
-                            <ListItemIcon>
-                                <DevicesOtherIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Laptop & Desktops" sx={{color: 'black'}} />
-                        </ListItemButton>
-                    </ListItem>
-                    {/*IT Peripherals */}
-                    <ListItem sx={{marginBottom: 2}}>
-                        <ListItemButton href='/it-peripherals'>
-                            <ListItemIcon>
-                                <InventoryIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="IT Peripherals" sx={{color: 'black'}} />
-                        </ListItemButton>
-                    </ListItem>
-                    {/*Software */}
-                    <ListItem sx={{marginBottom: 2}}>
-                        <ListItemButton href='/software'>
-                            <ListItemIcon>
-                                <TerminalIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Software" sx={{color: 'black'}} />
-                        </ListItemButton>
-                    </ListItem>
-                    {/*Service Unit */}
-                    <ListItem sx={{marginBottom: 2}}>
-                        <ListItemButton href='/service-unit'>
-                            <ListItemIcon>
-                                <ComputerIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Service Unit" sx={{color: 'black'}} />
-                        </ListItemButton>
-                    </ListItem>
-                    {/*eRx Tablets */}
-                    <ListItem sx={{marginBottom: 2}}>
-                        <ListItemButton href='/erx-tablets'>
-                            <ListItemIcon>
-                                <TabletAndroidIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="eRx Tablets" sx={{color: 'black'}} />
-                        </ListItemButton>
-                    </ListItem>
-                    {/*Printers (Vendor's Owned) */}
-                    <ListItem sx={{marginBottom: 2}}>
-                        <ListItemButton href='/printers'>
-                            <ListItemIcon>
-                                <PrintIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Printers (Vendor's Owned)" sx={{color: 'black'}} />
-                        </ListItemButton>
-                    </ListItem>
-                    {/*CABs */}
-                    <ListItem sx={{marginBottom: 2}}>
-                        <ListItemButton href='/cabs'>
-                            <ListItemIcon>
-                                <WarehouseOutlinedIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="CABs" sx={{color: 'black'}} />
-                        </ListItemButton>
-                    </ListItem>
-                    {/*Accountability */}
-                    <ListItem sx={{marginBottom: 2}}>
-                        <ListItemButton href='/accountability'>
-                            <ListItemIcon>
-                                <TextSnippetIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Accountability" sx={{color: 'black'}} />
-                        </ListItemButton>
-                    </ListItem>
-                </List>
-            </Box>
+    <Box sx={{ display: 'flex', mt: 7 }}>
+      <Box
+        sx={{
+          top: 0,
+          left: 0,
+          height: '100vh',
+          width: 280,
+          display: 'flex',
+          flexDirection: 'column',
+          backgroundColor: '#ffffff',
+          border: '1px solid rgb(216, 217, 221)',
+          padding: 1.5,
+          boxSizing: 'border-box',
+        }}
+      >
+        {/* Logo */}
+        <Box sx={{ mb: 2, textAlign: 'center' }}>
+          <img
+            src={Logo}
+            alt="Logo"
+            style={{
+              width: '100%',
+              maxWidth: 270,
+              height: 'auto',
+              objectFit: 'contain',
+            }}
+          />
         </Box>
+
+        {/* Navigation List */}
+        <Box sx={{ flex: 1, overflowY: 'auto' }}>
+          <List>
+            <SidebarItem href="/dashboard" icon={<DashboardOutlinedIcon />} label="Dashboard" />
+            <SidebarItem href="/laptop-desktop" icon={<DevicesOtherIcon />} label="Laptop & Desktops" />
+            <SidebarItem href="/it-peripherals" icon={<InventoryIcon />} label="IT Peripherals" />
+            <SidebarItem href="/software" icon={<TerminalIcon />} label="Software" />
+            <SidebarItem href="/service-unit" icon={<ComputerIcon />} label="Service Unit" />
+            <SidebarItem href="/erx-tablets" icon={<TabletAndroidIcon />} label="eRx Tablets" />
+            <SidebarItem href="/printers" icon={<PrintIcon />} label="Printers (Vendor's Owned)" />
+            <SidebarItem href="/cabs" icon={<WarehouseOutlinedIcon />} label="CABs" />
+            <SidebarItem href="/accountability" icon={<TextSnippetIcon />} label="Accountability" />
+          </List>
+        </Box>
+      </Box>
     </Box>
-  )
-  
+  );
+}
+
+// Reusable Sidebar Item component
+function SidebarItem({ href, icon, label }) {
+  return (
+    <ListItem sx={{ mb: 5 }} disablePadding>
+      <ListItemButton href={href}>
+        <ListItemIcon>{icon}</ListItemIcon>
+        <ListItemText primary={label} sx={{ color: 'black' }} />
+      </ListItemButton>
+    </ListItem>
+  );
 }

@@ -41,12 +41,16 @@ export default function Header({ title }) {
   };
 
   return (
-    <AppBar position="fixed" sx={{ width: '80%', backgroundColor: '#00008b' }}>
-      <Toolbar>
+    <AppBar position="fixed" sx={{ minWidth: '10%', backgroundColor: '#00008b' }}>
+      <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Prompt open={alert.open} message={alert.message} severity={alert.severity} onClose={handleCloseAlert} />
-        <Typography variant="h6" noWrap sx={{ flexGrow: 1, display: { sx: 'none', sm: 'block' } }}>
+        
+        {/* Title stays on the left */}
+        <Typography variant="h6" noWrap sx={{ flexGrow: 1 }}>
           {title}
         </Typography>
+
+        {/* Avatar stays on the right */}
         <IconButton onClick={handleClick}>
           <Avatar
             sx={{
@@ -55,9 +59,12 @@ export default function Header({ title }) {
                 transform: 'scale(1.1)',  // Scale the avatar on hover
                 transition: 'transform 0.3s ease',  // Smooth transition for the scale
               },
+              width: { xs: 30, sm: 40 },
+              height: { xs: 30, sm: 40 },
             }}
           />
         </IconButton>
+
         <Menu
           anchorEl={anchorEl}
           open={open}
