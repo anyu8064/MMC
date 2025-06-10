@@ -127,7 +127,9 @@ export default function AddProductLD({onOpen, onClose}) {
     }
 
     const newProductRef = push(ref(db, firebasePath));
+    const id = newProductRef.key;
     await set(newProductRef, {
+      id,
       ComputerName: computerName,
       SINum: siNum,
       PONum: poNum,

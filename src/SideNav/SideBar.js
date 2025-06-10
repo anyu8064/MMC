@@ -53,6 +53,7 @@ export default function SideBar() {
             <SidebarItem href="/printers" icon={<PrintIcon />} label="Printers (Vendor's Owned)" />
             <SidebarItem href="/cabs" icon={<WarehouseOutlinedIcon />} label="CABs" />
             <SidebarItem href="/accountability" icon={<TextSnippetIcon />} label="Accountability" />
+            <SidebarItem href="/archive" icon={<TextSnippetIcon />} label="Archive" />
           </List>
         </Box>
       </Box>

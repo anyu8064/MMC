@@ -12,6 +12,7 @@ import Tablet from './MainPage/eRxTablets';
 import Printers from './MainPage/Printers';
 import CABs from './MainPage/CABs';
 import Accountability from './MainPage/Accountability';
+import Archive from './MainPage/Archive';
 //import PrivateRoute from './context/PrivateRoute';
 
 
@@ -33,6 +34,7 @@ export default function App() {
           <Route path='/printers' element={<Printers />} />
           <Route path='/cabs' element={<CABs />} />
           <Route path='/accountability' element={<Accountability />} />
+          <Route path='/archive' element={<Archive />} />
         </Routes>
       </Router>
     </AuthContextProvider>
