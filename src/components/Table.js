@@ -309,7 +309,7 @@ export default function TableData({ basePath = null}) {
                         <TableCell>
                             {isArchive ? (
                             <Tooltip title='Restore'>
-                                <IconButton color='primary' onClick={() => handleRestore(row)}>
+                                <IconButton onClick={() => handleRestore(row)}>
                                 <RestoreIcon />
                                 </IconButton>
                             </Tooltip>
