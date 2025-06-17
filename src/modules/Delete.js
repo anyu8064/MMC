@@ -36,7 +36,7 @@ export default function Delete({ open, onClose, productId, firebasePath }) {
       <DialogContent>Are you sure you want to archive this item?</DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
-        <Button color="error" onClick={handleDelete}>Archive</Button>
+        <Button color="primary" onClick={handleDelete}>Archive</Button>
       </DialogActions>
     </Dialog>
   );

@@ -10,7 +10,7 @@ export default function Software() {
     <Box sx={{display: 'flex', height: '100vh'}}>
       <SideBar />
     </Box>
-    <Box sx={{flexGrow: 1, display: 'flex', flexDirection: 'column', ml: '300px'}}>
+    <Box sx={{flexGrow: 1, display: 'flex', flexDirection: 'column'}}>
       <Header title='Software' />
         <Box sx={{flexGrow: 1, p: 2, mt: 10, width: '1160px'}}>
           <Table />

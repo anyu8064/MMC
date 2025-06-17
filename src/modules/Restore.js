@@ -19,6 +19,7 @@ const pathMap = {
   '/printers': 'add-printers',
   '/it-peripherals': 'add-it-peripherals',
   '/cabs': 'add-cabs',
+  '/archive': 'archive',
   '/archive/laptop-desktop': 'archive/add-laptop-desktop',
   '/archive/software': 'archive/add-software',
   '/archive/service-unit': 'archive/add-service-unit',
@@ -33,23 +34,19 @@ export default function Restore({ open, onClose, data }) {
   const currentPath = location.pathname;
   const originalPath = data?.TableSource;
   const activePath = pathMap[originalPath];
+  const archivePath = pathMap[currentPath];
 
   const handleRestore = async () => {
     try {
-      console.log("currentPath:", currentPath);
-      console.log("originalPath:", originalPath);
-      console.log("activePath:", activePath);
-      console.log("data.id:", data?.id);
-
       if (!data?.id || !activePath ) {
         console.error("Missing required info for restore");
         return;
       }
 
       // Move to active path
-      await set(ref(db, `${originalPath}/${data.id}`), data);
+      await set(ref(db, `${activePath}/${data.id}`), data);
       // Delete from archive
-      await remove(ref(db, `${currentPath}/${data.id}`));
+      await remove(ref(db, `${archivePath}/${activePath}/${data.id}`));
       onClose();
     } catch (error) {
       console.log('Error restoring item:', error);

@@ -8,7 +8,7 @@ export default function ITPeripherals() {
   return (
     <Box sx={{display: 'flex', height: '100vh', width: '100%'}}>
         <SideBar />
-      <Box sx={{flexGrow: 1, display: 'flex', flexDirection: 'column', ml: '300px'}}>
+      <Box sx={{flexGrow: 1, display: 'flex', flexDirection: 'column'}}>
         <Header title='IT Peripherals' />
           <Box sx={{flexGrow: 1, p: 2, mt: 10, width: '1160px'}}>
             <Table />

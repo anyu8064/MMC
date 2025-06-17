@@ -4,7 +4,6 @@ import AddProductLD from '../Modals/AddProductLD';
 import { db } from '../utils/firebase';
 import { ref, onValue } from 'firebase/database';
 import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
 import RestoreIcon from '@mui/icons-material/Restore';
 import ArchiveIcon from '@mui/icons-material/Archive';
 import { useLocation } from 'react-router-dom';
@@ -321,8 +320,8 @@ export default function TableData({ basePath = null}) {
                                     <EditIcon />
                                 </IconButton>
                                 </Tooltip>
-                                <Tooltip title='Delete'>
-                                <IconButton color='error' onClick={() => handleDeleteClick(row.id)}>
+                                <Tooltip title='Archive'>
+                                <IconButton onClick={() => handleDeleteClick(row.id)}>
                                     <ArchiveIcon />
                                 </IconButton>
                                 </Tooltip>

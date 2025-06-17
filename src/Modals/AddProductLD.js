@@ -22,7 +22,7 @@ const pathMap = {
   '/cabs': 'add-cabs',
 };
 
-export default function AddProductLD({onOpen, onClose}) {
+export default function AddProductLD({onOpen, onClose, data}) {
   const [computerName, setComputerName] = useState('');
   const [siNum, setSiNum] = useState('');
   const [poNum, setPoNum] = useState('');
@@ -129,6 +129,7 @@ export default function AddProductLD({onOpen, onClose}) {
     const newProductRef = push(ref(db, firebasePath));
     const id = newProductRef.key;
     await set(newProductRef, {
+      TableSource: location.pathname,
       id,
       ComputerName: computerName,
       SINum: siNum,
